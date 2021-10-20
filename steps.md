@@ -2,6 +2,7 @@
 
 ## Basics
 
+[Why](playgrounds/why.ws.kts)  
 [Pure functions](playgrounds/sideeffect.ws.kts)  
 [HighOrderFunction](playgrounds/highorder.ws.kts)  
 [Curry - Partial](playgrounds/playwithfunctions.ws.kts)  
@@ -28,7 +29,8 @@ Sum type, Product type
 
 ## Architecture
 
-[Sample app]()
+[Lottery](lottery/src/main/kotlin/lottery/Main.kt)
+[Sample app](application/src/main/kotlin/infra/Main.kt)
 
 ## Furthermore
 
