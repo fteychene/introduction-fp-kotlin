@@ -1,24 +1,32 @@
 
+fun fahrenheitToCelsius(x: Double): Double =
+    (x - 32.0) * (5.0 / 9.0)
+
+fun printCelsius(x: Double): String =
+    "$x degrees celsius"
+
+
 // Compose
 
-fun <A, B, C> compose(f: (B) -> C, g: (A) -> B): (A) -> C =
-    { a: A -> f(g(a)) }
+//fun <A, B, C> compose(g: (B) -> C, f: (A) -> B): (A) -> C =
+//    { this(f(it)) }
 
-val fahrenheit2celsius: (Double) -> String =
-    compose<Double, Double, String>(
-        { b -> "$b degrees celsius" },
-        { a -> (a - 32.0) * (5.0 / 9.0) }
-    )
+fun <A, B, C> ((B) -> C).compose(f: (A) -> B): (A) -> C =
+    { this(f(it)) }
 
-fahrenheit2celsius(68.0)
+val fahrenheightToCelsius2 = ::printCelsius.compose(::fahrenheitToCelsius)
+
+fahrenheightToCelsius2(68.0)
 
 // Pipe
 
-fun <A, B, C> ((A) -> B).pipe(f: (B) -> C): (A) -> C =
-    { a: A -> f(this(a)) }
+//fun <A, B, C> pipe(f: (A) -> B, g: (B) -> C): (A) -> C =
+//    { g(this(it))}
 
-val fahrenheit2celsiusPipe: (Double) -> String =
-    { a: Double -> (a - 32.0) * (5.0 / 9.0) }
-        .pipe { b: Double -> "$b degrees celsius" }
+fun <A, B, C> ((A) -> B).pipe(g: (B) -> C): (A) -> C =
+    { g(this(it))}
 
-fahrenheit2celsiusPipe(68.0)
+
+val fahrenheightToCelsius3 = ::fahrenheitToCelsius.pipe(::printCelsius)
+
+fahrenheightToCelsius3(68.0)
