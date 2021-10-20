@@ -1,23 +1,34 @@
 
-// Function could be returned
+fun square(x: Int): Int = x * x
 
-fun inMemoryStorage(values: List<String>): (String) -> List<String> =
-    { searched -> values.filter { it.contains(searched.lowercase()) }}
+fun double(x: Int): Int = x * 2
 
+fun printSquare(x: Int): String =
+    "Square of $x is ${square(x)}"
 
-inMemoryStorage(listOf("beer", "wine", "water", "soda"))("a")
+fun printDouble(x: Int): String =
+    "Double of $x is ${double(x)}"
+
+printSquare(3)
+printDouble(3)
 
 // Function as value
 
-val repository = inMemoryStorage(listOf("beer", "wine", "water", "soda"))
+fun printOperation(name: String, x: Int, op: (Int) -> Int): String =
+    "$name of $x is ${op(x)}"
 
-repository("w")
 
-// Function could be received
+printOperation("Square", 3, ::square)
+printOperation("Double", 3, ::double)
 
-fun search(searching: String, f: (String) -> List<String>): String {
-    return "Result for ${searching} is ${f(searching)}"
-}
 
-search("W", repository)
-search("B", repository)
+// Function could be returned
+
+fun operation(name: String, op: (Int) -> Int): (Int) -> String =
+    { value -> "$name of $value is ${op(value)}" }
+
+val square2 = operation("Square", ::square)
+val double2 = operation("Double", ::double)
+
+square2(3)
+double2(3)
