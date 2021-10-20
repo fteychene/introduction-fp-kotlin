@@ -29,7 +29,7 @@ class LotteryService {
         State { cache ->
             eventPort.getEvents()
                 .filterOrElse({ it.isNotEmpty() }) { NoEventAvailable }
-                .map { it.sortedBy { it.start }.let { println(it); it} .first() }
+                .map { it.sortedBy { it.start } .first() }
                 .flatMap { eventPort.getAttendees(it.id) }
                 .traverseState(this::updateAttendees)
                 .run(cache)
