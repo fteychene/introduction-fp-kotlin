@@ -10,9 +10,6 @@
 
 ## Data in functional
 
-Faire porter de l'information dans le typage
-Sum type, Product type
-
 [Data](playgrounds/adt.ws.kts)  
 [BasicKata](basic-kata/src/main/kotlin/App.kt)
 
@@ -25,11 +22,11 @@ Sum type, Product type
 
 ## Patterns
 
-[Functor]()
+[Functor](arrow-base/src/main/kotlin/functor/Functor.kt)
 
 ## Architecture
 
-[Lottery](lottery/src/main/kotlin/lottery/Main.kt)
+[Lottery](lottery/src/main/kotlin/lottery/Main.kt)  
 [Sample app](application/src/main/kotlin/infra/Main.kt)
 
 ## Furthermore
