@@ -1,6 +1,7 @@
 package lottery.domain
 
 import arrow.core.*
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.time.ZonedDateTime
@@ -106,7 +107,7 @@ internal class LotteryServiceTest {
     }
 
     @Test
-    fun `loadAttendees should update state`() {
+    fun `loadAttendees should update state`() = runBlocking  {
         val attendees = listOf(
             Attendee(firstName = "Test", lastName = "0", email = "test.0@gmail.com"),
             Attendee(firstName = "Test", lastName = "1", email = "test.1@gmail.com"),
@@ -130,7 +131,7 @@ internal class LotteryServiceTest {
     }
 
     @Test
-    fun `loadAttendees should fail with NoEventAvailable`() {
+    fun `loadAttendees should fail with NoEventAvailable`() = runBlocking  {
         val eventPort = object: EventPort {
             override fun getEvents(): Either<EventPortError, List<Event>> =
                 listOf<Event>().right()
@@ -150,7 +151,7 @@ internal class LotteryServiceTest {
     }
 
     @Test
-    fun `loadAttendees should fail with EventPortError on getEvent`() {
+    fun `loadAttendees should fail with EventPortError on getEvent`() = runBlocking {
         val error = DatasourceIssue(IllegalStateException("Manual"))
         val eventPort = object: EventPort {
             override fun getEvents(): Either<EventPortError, List<Event>> =
@@ -171,7 +172,7 @@ internal class LotteryServiceTest {
     }
 
     @Test
-    fun `loadAttendees should fail with EventPortError on getAttendees`() {
+    fun `loadAttendees should fail with EventPortError on getAttendees`() = runBlocking {
         val error = DatasourceIssue(IllegalStateException("Manual"))
         val eventPort = object: EventPort {
             override fun getEvents(): Either<EventPortError, List<Event>> =

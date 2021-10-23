@@ -25,7 +25,7 @@ class LotteryService {
     fun updateAttendees(attendees: List<Attendee>): State<Option<AttendeeCache>, Int> =
         State { attendees.size to Some(AttendeeCache(attendees)) }
 
-    fun loadAttendees(eventPort: EventPort): State<Option<AttendeeCache>, Either<LotteryError, Int>> =
+    suspend fun loadAttendees(eventPort: EventPort): State<Option<AttendeeCache>, Either<LotteryError, Int>> =
         State { cache ->
             eventPort.getEvents()
                 .filterOrElse({ it.isNotEmpty() }) { NoEventAvailable }
