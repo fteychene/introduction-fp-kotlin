@@ -6,7 +6,7 @@ sealed class EventPortError: LotteryError
 data class DatasourceIssue(val cause: Throwable): EventPortError()
 
 interface EventPort {
-    fun getEvents(): Either<EventPortError, List<Event>>
+    suspend fun getEvents(): Either<EventPortError, List<Event>>
 
-    fun getAttendees(eventId: EventId): Either<EventPortError, List<Attendee>>
+    suspend fun getAttendees(eventId: EventId): Either<EventPortError, List<Attendee>>
 }

@@ -43,7 +43,7 @@ class DatabaseEventRepository(
     val attendeeRepository: JpaAttendeeRepository
 ) : EventPort {
 
-    override fun getEvents(): Either<EventPortError, List<Event>> =
+    override suspend fun getEvents(): Either<EventPortError, List<Event>> =
         Either.catch {
             eventRepository
                 .findAll()
@@ -59,7 +59,7 @@ class DatabaseEventRepository(
             }
         }.mapLeft { DatasourceIssue(it) }
 
-    override fun getAttendees(eventId: EventId): Either<EventPortError, List<Attendee>> =
+    override suspend fun getAttendees(eventId: EventId): Either<EventPortError, List<Attendee>> =
         Either.catch {
             attendeeRepository.findByEvent(DataseEvent(id = eventId, name = "", start = ZonedDateTime.now()))
                 .map {

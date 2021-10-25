@@ -9,7 +9,7 @@ import java.time.ZonedDateTime
 internal class LotteryServiceTest {
 
     @Test
-    fun `draw should pick an attendee based on RNG`() {
+    fun `draw should pick an attendee based on RNG`() = runBlocking {
         val attendees = listOf(
             Attendee(firstName = "Test", lastName = "0", email = "test.0@gmail.com"),
             Attendee(firstName = "Test", lastName = "1", email = "test.1@gmail.com"),
@@ -33,7 +33,7 @@ internal class LotteryServiceTest {
     }
 
     @Test
-    fun `draw should return an empty list on 0 asked`() {
+    fun `draw should return an empty list on 0 asked`() = runBlocking {
         val attendees = listOf(
             Attendee(firstName = "Test", lastName = "0", email = "test.0@gmail.com"),
             Attendee(firstName = "Test", lastName = "1", email = "test.1@gmail.com"),
@@ -51,7 +51,7 @@ internal class LotteryServiceTest {
     }
 
     @Test
-    fun `draw should return multiple attendees based on RNG`() {
+    fun `draw should return multiple attendees based on RNG`() = runBlocking {
         val attendees = listOf(
             Attendee(firstName = "Test", lastName = "0", email = "test.0@gmail.com"),
             Attendee(firstName = "Test", lastName = "1", email = "test.1@gmail.com"),
@@ -84,7 +84,7 @@ internal class LotteryServiceTest {
     }
 
     @Test
-    fun `updateAttendees should update cache`() {
+    fun `updateAttendees should update cache`() = runBlocking {
         val lottery = LotteryService()
 
         val attendees = listOf(
@@ -115,10 +115,10 @@ internal class LotteryServiceTest {
             Attendee(firstName = "Test", lastName = "3", email = "test.3@gmail.com")
         )
         val eventPort = object: EventPort {
-            override fun getEvents(): Either<EventPortError, List<Event>> =
+            override suspend fun getEvents(): Either<EventPortError, List<Event>> =
                 listOf(Event(id = 1, start = ZonedDateTime.now())).right()
 
-            override fun getAttendees(eventId: EventId): Either<EventPortError, List<Attendee>> =
+            override suspend fun getAttendees(eventId: EventId): Either<EventPortError, List<Attendee>> =
                 attendees.right()
         }
 
@@ -133,10 +133,10 @@ internal class LotteryServiceTest {
     @Test
     fun `loadAttendees should fail with NoEventAvailable`() = runBlocking  {
         val eventPort = object: EventPort {
-            override fun getEvents(): Either<EventPortError, List<Event>> =
+            override suspend fun getEvents(): Either<EventPortError, List<Event>> =
                 listOf<Event>().right()
 
-            override fun getAttendees(eventId: EventId): Either<EventPortError, List<Attendee>> =
+            override suspend fun getAttendees(eventId: EventId): Either<EventPortError, List<Attendee>> =
                 fail("Should not have called EventPort.getAttendees")
         }
 
@@ -154,10 +154,10 @@ internal class LotteryServiceTest {
     fun `loadAttendees should fail with EventPortError on getEvent`() = runBlocking {
         val error = DatasourceIssue(IllegalStateException("Manual"))
         val eventPort = object: EventPort {
-            override fun getEvents(): Either<EventPortError, List<Event>> =
+            override suspend fun getEvents(): Either<EventPortError, List<Event>> =
                 error.left()
 
-            override fun getAttendees(eventId: EventId): Either<EventPortError, List<Attendee>> =
+            override suspend fun getAttendees(eventId: EventId): Either<EventPortError, List<Attendee>> =
                 fail("Should not have called EventPort.getAttendees")
         }
 
@@ -175,10 +175,10 @@ internal class LotteryServiceTest {
     fun `loadAttendees should fail with EventPortError on getAttendees`() = runBlocking {
         val error = DatasourceIssue(IllegalStateException("Manual"))
         val eventPort = object: EventPort {
-            override fun getEvents(): Either<EventPortError, List<Event>> =
+            override suspend fun getEvents(): Either<EventPortError, List<Event>> =
                 listOf(Event(id = 1, start = ZonedDateTime.now())).right()
 
-            override fun getAttendees(eventId: EventId): Either<EventPortError, List<Attendee>> =
+            override suspend fun getAttendees(eventId: EventId): Either<EventPortError, List<Attendee>> =
                 error.left()
         }
 

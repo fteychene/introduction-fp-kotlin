@@ -2,7 +2,7 @@ package lottery.utils
 
 import arrow.core.Either
 
-data class State<S, out A>(val run: (S) -> Pair<A, S>) {
+data class State<S, out A>(val run: suspend (S) -> Pair<A, S>) {
 
     fun <B> map(f: (A) -> B): State<S, B> =
         flatMap { a -> unit(f(a)) }
